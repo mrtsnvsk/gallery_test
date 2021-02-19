@@ -1,0 +1,5 @@
+{
+  "port": 8080,
+  "mongoUrl": "mongodb+srv://gallery:qwerty123@cluster0.2l6es.mongodb.net/dataBase?retryWrites=true&w=majority",
+  "jwtSecretKey": "gallery"
+}
