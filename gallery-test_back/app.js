@@ -30,7 +30,7 @@ const start = async () => {
     app.use('/api', require('./routes/UserRoute'));
     app.use('/api', require('./routes/ImageRoute'));
     app.use('/api', require('./routes/CommentRoute'));
-    app.use('/static', express.static('img'));
+    app.use('/static', express.static('uploads'));
 
     app.listen(PORT, () => console.log(`App has been started on ${PORT}`));
   } catch (e) {

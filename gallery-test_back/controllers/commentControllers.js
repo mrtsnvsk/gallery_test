@@ -8,10 +8,8 @@ const getCommentsController = async (req, res) => {
     const imagesComments = await Comment.find({ imageId: id });
     const data = [currentImage, imagesComments];
 
-    console.log('data', data);
     res.json(data);
   } catch (e) {
-    console.log('Server error:', e.message);
     res.json({
       error: 'Ошибка при получении комментариев.',
     });
@@ -28,12 +26,10 @@ const newCommentController = async (req, res) => {
       login,
     });
 
-    console.log('Комментарий успешно опубликован.');
     res.json({
       message: 'Комментарий успешно опубликован.',
     });
   } catch (e) {
-    console.log('Server error:', e.message);
     res.json({
       error: 'Ошибка при создании комментария.',
     });

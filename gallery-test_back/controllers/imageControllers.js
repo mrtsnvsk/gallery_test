@@ -4,10 +4,8 @@ const getImagesController = async (req, res) => {
   try {
     const images = await Image.find();
 
-    console.log('images', images);
     res.json(images);
   } catch (e) {
-    console.log('Server error:', e.message);
     res.json({
       error: 'Ошибка при загрузке изображений.',
     });
@@ -16,19 +14,18 @@ const getImagesController = async (req, res) => {
 
 const addImageController = async (req, res) => {
   try {
-    const { login, image, location } = req.body;
+    const { imageOwner, location } = req.body;
 
-    await Image.create({
-      login,
-      image,
+    const image = await Image.create({
+      login: imageOwner,
+      image: req.file.filename,
       location,
     });
-    console.log('Фотографи успешно загружена.');
-    res.json({ message: 'Фотография успешно загружена.' });
+
+    res.json(image);
   } catch (e) {
-    console.log('Server error:', e.message);
     res.json({
-      message: e.message,
+      error: 'Не удалось загрузить изображение',
     });
   }
 };

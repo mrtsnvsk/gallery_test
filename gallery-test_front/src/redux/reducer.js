@@ -6,8 +6,13 @@ const reducer = (state = initialState, action) => {
     case constant.AUTH_USER:
       return {
         ...state,
-        user: action.payload,
+        currentUser: action.payload,
         isAuth: true,
+      };
+    case constant.REG_SUCCESS:
+      return {
+        ...state,
+        authSuccess: action.payload,
       };
     case constant.AUTH_ERROR:
       return {
@@ -18,7 +23,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isAuth: true,
-        user: action.payload,
+        currentUser: action.payload,
       };
     case constant.LOG_OUT:
       return {
@@ -30,11 +35,21 @@ const reducer = (state = initialState, action) => {
         ...state,
         images: action.payload,
       };
+    case constant.UPLOAD_NEW_IMAGE:
+      return {
+        ...state,
+        images: [...state.images, action.payload],
+      };
     case constant.UPLOAD_COMMENTS:
       return {
         ...state,
         currentImage: Object.assign({}, ...action.payload[0]),
         currentImageComments: action.payload[1],
+      };
+    case constant.NEW_COMMENT:
+      return {
+        ...state,
+        currentImageComments: [action.payload, ...state.currentImageComments],
       };
     default:
       return state;

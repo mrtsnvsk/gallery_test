@@ -6,17 +6,25 @@ import { checkAuthUser, logoutUser } from '../../redux/actions/authActions';
 import Header from '../Header';
 import Gallery from '../Gallery';
 import Comments from '../Comments';
+import RegistrationPage from '../RegistrationPage';
+
 import './App.css';
 
 const App = ({ isAuth, logoutUser, checkAuthUser }) => {
   useEffect(() => {
     localStorage.getItem('token') ? checkAuthUser() : logoutUser();
-  }, [checkAuthUser, logoutUser]);
+  }, []);
   return (
     <>
-      {!isAuth && <Redirect to='login' />}
-      {!isAuth && <Route to='/login' component={AuthPage} />}
-      {isAuth && <Redirect from='/' to='gallery' />}
+      {!isAuth && (
+        <>
+          <Switch>
+            <Route path='/registration' component={RegistrationPage} />
+            <Route path='/login' component={AuthPage} />
+          </Switch>
+        </>
+      )}
+
       {isAuth && (
         <div>
           <Header />

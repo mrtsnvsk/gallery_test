@@ -8,7 +8,7 @@ import Spinner from '../Spinner';
 const Gallery = ({ images, uploadImages }) => {
   useEffect(() => {
     uploadImages();
-  }, [uploadImages]);
+  }, []);
 
   return (
     <div>

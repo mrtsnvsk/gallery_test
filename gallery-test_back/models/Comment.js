@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const schema = new Schema({
   imageId: {
-    type: String,
+    type: Schema.Types.ObjectId,
   },
   login: {
     type: String,

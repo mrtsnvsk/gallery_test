@@ -1,9 +1,10 @@
 const initialState = {
-  user: null,
+  currentUser: null,
   images: null,
   currentImage: null,
   currentImageComments: null,
   isAuth: false,
+  authSuccess: null,
   error: null,
 };
 

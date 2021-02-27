@@ -1,6 +1,33 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const config = require('config');
+const bcrypt = require('bcryptjs');
+
+const registerController = async (req, res) => {
+  try {
+    const { login, phone, email, password } = req.body;
+
+    const matchUser = await User.findOne({ phone });
+
+    if (matchUser) {
+      res.json({
+        error: 'Пользователь с таким номером телефона уже создан',
+      });
+      return;
+    }
+
+    const hashPassword = await bcrypt.hash(password, 10);
+    await User.create({ email, login, phone, password: hashPassword });
+
+    res.json({
+      message: 'Учетная запись создана.',
+    });
+  } catch (e) {
+    res.json({
+      error: 'Ошибка при регистрации',
+    });
+  }
+};
 
 const authController = async (req, res) => {
   try {
@@ -9,56 +36,39 @@ const authController = async (req, res) => {
     const user = await User.findOne({ phone });
 
     if (!user) {
-      console.log('Неверный номер телефона или пароль.');
-      return res.json({
-        error: 'Неверный номер телефона или пароль.',
+      res.json({
+        error: 'Неверный номер телефона или пароль123.',
       });
+      return;
     }
 
-    if (user.password !== password) {
-      console.log('Неверный номер телефона или пароль.');
-      return res.json({
+    const matchPassword = await bcrypt.compare(password, user.password);
+
+    if (!matchPassword) {
+      res.json({
         error: 'Неверный номер телефона или пароль.',
       });
+      return;
     }
 
     const token = jwt.sign(
       {
         login: user.login,
+        email: user.email,
         phone: user.phone,
-        password: user.password,
         id: user._id,
       },
       config.get('jwtSecretKey')
     );
-    console.log('token', token);
+
     res.json({
       token,
     });
   } catch (e) {
-    console.log('Server error:', e.message);
     res.json({
       error: 'Ошибка при авторизации.',
     });
   }
 };
 
-const addUserController = async (req, res) => {
-  try {
-    const { login, phone, password } = req.body;
-
-    await User.create({ login, phone, password });
-
-    console.log('Учетная запись создана.');
-    res.json({
-      message: 'Учетная запись создана.',
-    });
-  } catch (e) {
-    console.log('Server error:', e.message);
-    res.json({
-      message: 'Ошибка при создании пользователя',
-    });
-  }
-};
-
-module.exports = { authController, addUserController };
+module.exports = { authController, registerController };

@@ -4,9 +4,10 @@ const {
   getImagesController,
   addImageController,
 } = require('../controllers/imageControllers');
+const uploadImageMiddleware = require('../middleware/newImageMiddleware');
 
-// http://localhost:8080/api/newImage
-router.post('/newImage', addImageController);
+//http:localhost:8080/api/newImage
+router.post('/newImage', uploadImageMiddleware, addImageController);
 
 // http://localhost:8080/api/images
 router.get('/images', getImagesController);

@@ -5,27 +5,8 @@ import { Button, Grid, Typography } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { authUser, authError } from '../../redux/actions/authActions';
-
-const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-    height: 500,
-  },
-  fieldContainer: {
-    marginBottom: 20,
-  },
-  field: {
-    width: 250,
-    height: 40,
-    borderRadius: 5,
-  },
-  errorMessage: {
-    position: 'absolute',
-    color: 'red',
-    fontSize: 12,
-  },
-});
 
 const AuthPage = ({ authUser, authError, error }) => {
   const classes = useStyles();
@@ -94,16 +75,44 @@ const AuthPage = ({ authUser, authError, error }) => {
               Войти
             </Button>
           </Grid>
+          <Grid className={classes.authLink}>
+            <span>Нет аккаунта?</span>
+            &nbsp;
+            <Link to='/registration'>Зарегистрироваться</Link>
+          </Grid>
         </Form>
       </Formik>
       {error && setTimeout(() => authError(null), 3000) && (
         <Alert style={{ position: 'fixed', top: 0 }} severity='error'>
-          This is an error alert — check it out!
+          {error}
         </Alert>
       )}
     </Grid>
   );
 };
+
+const useStyles = makeStyles({
+  root: {
+    flexGrow: 1,
+    height: 500,
+  },
+  fieldContainer: {
+    marginBottom: 20,
+  },
+  field: {
+    width: 250,
+    height: 40,
+    borderRadius: 5,
+  },
+  errorMessage: {
+    position: 'absolute',
+    color: 'red',
+    fontSize: 12,
+  },
+  authLink: {
+    marginTop: 20,
+  },
+});
 
 const mapStateToProps = ({ error }) => {
   return {

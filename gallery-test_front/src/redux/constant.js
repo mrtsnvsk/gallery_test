@@ -4,3 +4,6 @@ export const UPLOAD_IMAGES = 'UPLOAD_IMAGES';
 export const LOG_OUT = 'LOG_OUT';
 export const CHECK_AUTH = 'CHECK_AUTH';
 export const UPLOAD_COMMENTS = 'UPLOAD_COMMENTS';
+export const REG_SUCCESS = 'REG_SUCCESS';
+export const UPLOAD_NEW_IMAGE = 'UPLOAD_NEW_IMAGE';
+export const NEW_COMMENT = 'NEW_COMMENT';

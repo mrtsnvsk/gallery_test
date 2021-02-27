@@ -1,5 +1,17 @@
 import * as constant from '../constant';
-import { authUserReq } from '../../api/requests';
+import { authUserReq, registrationUserReq } from '../../api/requests';
+
+export const registrationUser = (data) => {
+  return async (dispatch) => {
+    const response = await registrationUserReq(data);
+
+    if (response.data.error) {
+      return dispatch(authError(response.data.error));
+    }
+
+    dispatch(regSuccess(response.data.message));
+  };
+};
 
 export const authUser = (data) => {
   return async (dispatch) => {
@@ -10,7 +22,7 @@ export const authUser = (data) => {
     }
 
     localStorage.setItem('token', response.data.token);
-    const token = window.atob(response.data.token.split('.')[1]);
+    const token = JSON.parse(window.atob(response.data.token.split('.')[1]));
     dispatch({
       type: constant.AUTH_USER,
       payload: token,
@@ -20,7 +32,7 @@ export const authUser = (data) => {
 
 export const checkAuthUser = () => {
   const token = localStorage.getItem('token');
-  const user = window.atob(token.split('.')[1]);
+  const user = JSON.parse(window.atob(token.split('.')[1]));
 
   return {
     type: constant.CHECK_AUTH,
@@ -28,10 +40,17 @@ export const checkAuthUser = () => {
   };
 };
 
-export const authError = (data) => {
+export const regSuccess = (message) => {
+  return {
+    type: constant.REG_SUCCESS,
+    payload: message,
+  };
+};
+
+export const authError = (error) => {
   return {
     type: constant.AUTH_ERROR,
-    payload: data,
+    payload: error,
   };
 };
 
